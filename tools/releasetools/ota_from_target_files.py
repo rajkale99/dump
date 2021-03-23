@@ -835,14 +835,15 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
     sysmount = "/system"
 
   if OPTIONS.backuptool:
+    script.Print("Backup system files if needed...");
     script.RunBackup("backup", sysmount, target_info.get('use_dynamic_partitions') == "true")
+	script.Print("Backup completed!");
 
   # All other partitions as well as the data wipe use 10% of the progress, and
   # the update of the system partition takes the remaining progress.
   system_progress = 0.9 - (len(block_diff_dict) - 1) * 0.1
 
   script.Print("********************************************");
-  script.Print("                                  	    ");
   script.Print("  _               _              ___  ____  ");
   script.Print(" | |    ___  __ _(_) ___  _ __  / _ \/ ___| ");
   script.Print(" | |   / _ \/ _` | |/ _ \| '_ \| | | \___ \ ");
@@ -850,8 +851,8 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   script.Print(" |_____\___|\__, |_|\___/|_| |_|\___/|____/ ");
   script.Print("            |___/                           ");
   script.Print("********************************************");
-  script.Print("  	    By Dr. Raj Kale   	    	    ");
-  script.Print("             Android R                	    ");
+  script.Print("              By Dr. Raj Kale               ");
+  script.Print("                 Android R                  ");
   script.Print("********************************************");
 
   legionversion = target_info.GetBuildProp("ro.legion.display.version")
@@ -862,6 +863,7 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   securep = target_info.GetBuildProp("ro.build.version.security_patch")
   device = target_info.GetBuildProp("ro.product.device")
   manufacturer = target_info.GetBuildProp("ro.product.manufacturer")
+  maintainer = target_info.GetBuildProp("ro.maintainer.name")
 
   script.Print(" ROM version      : %s"%(legionversion));
   script.Print("");
@@ -876,6 +878,8 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   script.Print(" Device           : %s"%(device));
   script.Print("");
   script.Print(" Manufacturer     : %s"%(manufacturer));
+  script.Print("");
+  script.Print(" Maintainer       : %s"%(maintainer));
   script.Print("--------------------------------------------------");
 
   if OPTIONS.wipe_user_data:
@@ -907,12 +911,14 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   common.ZipWriteStr(output_zip, "boot.img", boot_img.data)
 
   device_specific.FullOTA_PostValidate()
+  
+  script.WriteRawImage("/boot", "boot.img")
 
   if OPTIONS.backuptool:
     script.ShowProgress(0.02, 10)
+	script.Print("Restoring system files...");
     script.RunBackup("restore", sysmount, target_info.get('use_dynamic_partitions') == "true")
-
-  script.WriteRawImage("/boot", "boot.img")
+	script.Print("Restore completed!");
 
   script.ShowProgress(0.1, 10)
   device_specific.FullOTA_InstallEnd()
