@@ -837,7 +837,7 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   if OPTIONS.backuptool:
     script.Print("Backup system files if needed...");
     script.RunBackup("backup", sysmount, target_info.get('use_dynamic_partitions') == "true")
-	script.Print("Backup completed!");
+    script.Print("Backup completed");
 
   # All other partitions as well as the data wipe use 10% of the progress, and
   # the update of the system partition takes the remaining progress.
@@ -863,7 +863,6 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   securep = target_info.GetBuildProp("ro.build.version.security_patch")
   device = target_info.GetBuildProp("ro.product.device")
   manufacturer = target_info.GetBuildProp("ro.product.manufacturer")
-  maintainer = target_info.GetBuildProp("ro.maintainer.name")
 
   script.Print(" ROM version      : %s"%(legionversion));
   script.Print("");
@@ -878,8 +877,6 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   script.Print(" Device           : %s"%(device));
   script.Print("");
   script.Print(" Manufacturer     : %s"%(manufacturer));
-  script.Print("");
-  script.Print(" Maintainer       : %s"%(maintainer));
   script.Print("--------------------------------------------------");
 
   if OPTIONS.wipe_user_data:
@@ -916,9 +913,9 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
 
   if OPTIONS.backuptool:
     script.ShowProgress(0.02, 10)
-	script.Print("Restoring system files...");
+    script.Print("Restoring system files...");
     script.RunBackup("restore", sysmount, target_info.get('use_dynamic_partitions') == "true")
-	script.Print("Restore completed!");
+    script.Print("Restore completed");
 
   script.ShowProgress(0.1, 10)
   device_specific.FullOTA_InstallEnd()
