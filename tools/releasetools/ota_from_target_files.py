@@ -837,7 +837,7 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   if OPTIONS.backuptool:
     script.Print("Backup system files if needed...");
     script.RunBackup("backup", sysmount, target_info.get('use_dynamic_partitions') == "true")
-	script.Print("Backup completed!");
+    script.Print("Backup completed");
 
   # All other partitions as well as the data wipe use 10% of the progress, and
   # the update of the system partition takes the remaining progress.
@@ -916,9 +916,9 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
 
   if OPTIONS.backuptool:
     script.ShowProgress(0.02, 10)
-	script.Print("Restoring system files...");
+    script.Print("Restoring system files...");
     script.RunBackup("restore", sysmount, target_info.get('use_dynamic_partitions') == "true")
-	script.Print("Restore completed!");
+    script.Print("Restore completed");
 
   script.ShowProgress(0.1, 10)
   device_specific.FullOTA_InstallEnd()
